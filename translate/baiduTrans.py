@@ -9,6 +9,8 @@ import urllib
 import random
 from pygtrans import Translate
 
+from translate.baiduTransKey import *
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -44,8 +46,8 @@ def zh2en(data: str):
 
 class Baidu_trans(object):
     def __init__(self):
-        self.appid = '20230423001652486'
-        self.secret_key = 'YIos8lWA1S2Yghc5BAnB'
+        self.appid = baidu_appid
+        self.secret_key = baidu_secret_key
         self.from_lang = 'auto'
         self.to_lang = 'en'
 
