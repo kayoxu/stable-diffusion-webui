@@ -57,6 +57,8 @@ import modules.ui
 from modules import modelloader
 from modules.shared import cmd_opts
 import modules.hypernetworks.hypernetwork
+import asyncio
+
 
 startup_timer.record("other imports")
 
@@ -65,6 +67,20 @@ if cmd_opts.server_name:
     server_name = cmd_opts.server_name
 else:
     server_name = "0.0.0.0" if cmd_opts.listen else None
+if sys.platform == "win32" and hasattr(asyncio, "WindowsSelectorEventLoopPolicy"):
+    _BasePolicy = asyncio.WindowsSelectorEventLoopPolicy
+    _BasePolicy = asyncio.WindowsSelectorEventLoopPolicy
+else:
+    _BasePolicy = asyncio.DefaultEventLoopPolicy
+class AnyThreadEventLoopPolicy(_BasePolicy):
+    def get_event_loop(self) -> asyncio.AbstractEventLoop:
+        try:
+            return super().get_event_loop()
+        except (RuntimeError, AssertionError):
+            loop = self.new_event_loop()
+            self.set_event_loop(loop)
+            return loop
+asyncio.set_event_loop_policy(AnyThreadEventLoopPolicy())
 
 
 def check_versions():
