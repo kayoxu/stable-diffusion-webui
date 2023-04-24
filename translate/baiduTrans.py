@@ -19,8 +19,8 @@ def zh2en(data: str):
 
     if data != '':
         try:
-            client = Translate(target='en-US',
-                               proxies={'http': 'http://192.168.5.62:1081', 'https': 'http://192.168.5.62:1081'})
+            # client = Translate(target='en-US', proxies={'http': 'http://192.168.5.62:1081', 'https': 'http://192.168.5.62:1081'})
+            client = Translate(target='en-US', proxies={'socks5': 'http://192.168.5.62:1080'})
             data = client.translate(data).translatedText
         except:
             try:
