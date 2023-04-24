@@ -23,7 +23,8 @@ fi
 # Install directory without trailing slash
 if [[ -z "${install_dir}" ]]
 then
-    install_dir="/home/$(whoami)"
+#    install_dir="/home/$(whoami)"
+    install_dir="/usr/ai"
 fi
 
 # Name of the subdirectory (defaults to stable-diffusion-webui)
@@ -56,7 +57,7 @@ then
 fi
 
 # this script cannot be run as root by default
-can_run_as_root=0
+can_run_as_root=1
 
 # read any command line flags to the webui.sh script
 while getopts "f" flag > /dev/null 2>&1
