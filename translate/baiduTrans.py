@@ -15,6 +15,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 def zh2en(data: str):
+    if data == '' or data.lower().__contains__('@nts'):
+        return data
+
     isok = True
 
     if data != '':
