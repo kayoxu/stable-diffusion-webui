@@ -8,6 +8,7 @@ import hashlib
 import urllib
 import random
 from pygtrans import Translate
+import translators as ts
 
 from translate.baiduTransKey import *
 
@@ -15,25 +16,28 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 def zh2en(data: str):
+    # 0 google 1baidu
+    typeType = 1
+
     if data == '' or data.lower().__contains__('@nts'):
         data = data.replace('@NTS', '').replace('@nts', '')
         return data
 
+    if data == '' or data.lower().__contains__('@baidu'):
+        data = data.replace('@BAIDU', '').replace('@baidu', '')
+        typeType = 1
+    elif data == '' or data.lower().__contains__('@google'):
+        data = data.replace('@GOOGLE', '').replace('@google', '')
+        typeType = 0
+
     isok = True
 
     if data != '':
-        try:
-            # client = Translate(target='en-US', proxies={'http': 'http://192.168.5.62:1081', 'https': 'http://192.168.5.62:1081'})
-            client = Translate(target='en-US', proxies={'socks5': 'http://192.168.5.62:1080'})
-            data = client.translate(data).translatedText
-        except:
-            try:
-                print('谷歌翻译失败，使用百度翻译')
-                bt = Baidu_trans()
-                data = bt.trans(data)['result']['dst']
-            except:
-                isok = False
-                pass
+
+        if typeType == 0:
+            data, isok = useGoogle(data, isok)
+        elif typeType == 1:
+            data, isok = useBaidu(data, isok)
 
     if isok:
         print('翻译成功了：\n' + data)
@@ -41,6 +45,32 @@ def zh2en(data: str):
         print('翻译失败了：\n' + data)
 
     return data
+
+
+def useGoogle(data, isok):
+    try:
+        # client = Translate(target='en-US', proxies={'http': 'http://192.168.5.191:1081', 'https': 'http://192.168.5.191:1081'})
+        client = Translate(target='en-US', proxies={'socks5': 'http://192.168.5.191:1080'})
+        data = client.translate(data).translatedText
+    except:
+        try:
+            print('谷歌翻译失败，使用百度翻译')
+            bt = Baidu_trans()
+            data = bt.trans(data)['result']['dst']
+        except:
+            isok = False
+            pass
+    return data, isok
+
+
+def useBaidu(data, isok):
+    try:
+        bt = Baidu_trans()
+        data = bt.trans(data)['result']['dst']
+    except:
+        pass
+
+    return data, isok
 
 
 """
