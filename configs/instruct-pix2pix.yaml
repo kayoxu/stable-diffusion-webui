@@ -20,7 +20,9 @@ model:
     conditioning_key: hybrid
     monitor: val/loss_simple_ema
     scale_factor: 0.18215
-    use_ema: false
+#    use_ema: false
+    use_ema: true
+    load_ema: true
 
     scheduler_config: # 10000 warmup steps
       target: ldm.lr_scheduler.LambdaLinearScheduler
