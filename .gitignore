@@ -37,3 +37,6 @@ notification.mp3
 */baiduTransKey.py
 /cache.json*
 /config_states/
+/extensions/openpose-editor/
+/extensions/sd-webui-controlnet/
+/extensions/sd_dreambooth_extension/
